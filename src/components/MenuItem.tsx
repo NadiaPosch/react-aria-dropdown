@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
+import { useFocusRing } from "@react-aria/focus";
 import { useOption } from "@react-aria/listbox";
+import { mergeProps } from "@react-aria/utils";
 import React, { FC, useRef } from "react";
 import { MenuItemProps } from "../types";
 
 export const MenuItem: FC<MenuItemProps> = ({ state, item, node }) => {
     const ref = useRef<HTMLLIElement | null>(null);
-    const { optionProps, isSelected, isFocused } = useOption(
+    const { isFocusVisible, focusProps } = useFocusRing();
+    const { optionProps, isSelected } = useOption(
         {
             key: node.key,
         },
@@ -15,11 +18,11 @@ export const MenuItem: FC<MenuItemProps> = ({ state, item, node }) => {
 
     return (
         <li
-            {...optionProps}
+            {...mergeProps(optionProps, focusProps)}
             ref={ref}
             className={`px-4 py-2 cursor-pointer hover:text-blue-300 transition-colors ${
                 isSelected ? "text-blue-500" : "text-black"
-            } ${isFocused ? "outline-blue-500" : "outline-none"}`}
+            } ${isFocusVisible ? "outline-blue-500" : "outline-none"}`}
         >
             {item.title}
         </li>

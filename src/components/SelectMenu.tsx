@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
+import { useFocusRing } from "@react-aria/focus";
 import { useListBox } from "@react-aria/listbox";
+import { mergeProps } from "@react-aria/utils";
 import React, { ReactElement, useRef } from "react";
 import { getKeyItemRecord, getMenuItems } from "../helpers";
 import { SelectMenuProps } from "../types";
@@ -15,6 +17,7 @@ export const SelectMenu = ({
     const items = getMenuItems(menuBlocks);
     const keyItemRecord = getKeyItemRecord(items);
     const ref = useRef<HTMLUListElement | null>(null);
+    const { isFocusVisible, focusProps } = useFocusRing();
     const { listBoxProps } = useListBox(
         {
             ...ariaProps,
@@ -25,7 +28,11 @@ export const SelectMenu = ({
     );
 
     return (
-        <ul {...listBoxProps} ref={ref} className="p-0 outline-none text-left">
+        <ul
+            {...mergeProps(listBoxProps, focusProps)}
+            ref={ref}
+            className={`p-0 text-left ${isFocusVisible ? "outline-blue-500 outline-2" : "outline-none"}`}
+        >
             {[...state.collection].map((section) => (
                 <MenuSection key={section.key} ariaLabel={section["aria-label"]}>
                     {[...section.childNodes].map((item) => (
