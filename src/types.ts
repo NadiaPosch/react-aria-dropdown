@@ -21,6 +21,11 @@ export type DropdownProps = {
     ariaLabel?: string;
 };
 
+export type OverlayProps = PropsWithChildren<{
+    isOpen?: boolean;
+    onClose: () => void;
+}>;
+
 export type SelectMenuProps = {
     menuBlocks: MenuBlock[];
     ariaProps: AriaListBoxOptions<any>;
@@ -35,5 +40,5 @@ export type MenuSectionProps = PropsWithChildren<{
 export type MenuItemProps = {
     state: ListState<object>;
     node: Node<object>;
-    title: string;
+    item: MenuItemType;
 };

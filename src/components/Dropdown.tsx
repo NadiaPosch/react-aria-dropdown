@@ -1,12 +1,12 @@
 import { useButton } from "@react-aria/button";
-import { FocusScope, useFocusRing } from "@react-aria/focus";
-import { DismissButton, useOverlay } from "@react-aria/overlays";
-import { useSelect } from "@react-aria/select";
+import { useFocusRing } from "@react-aria/focus";
+import { HiddenSelect, useSelect } from "@react-aria/select";
 import { mergeProps } from "@react-aria/utils";
 import { useSelectState } from "@react-stately/select";
 import React, { FC, useEffect, useRef } from "react";
 import { getActiveItem, mapToAriaProps } from "../helpers";
 import { DropdownProps } from "../types";
+import { Overlay } from "./Overlay";
 import { SelectMenu } from "./SelectMenu";
 
 export const Dropdown: FC<DropdownProps> = ({ menuBlocks, onChange, activeItemId, ariaLabel = "Dropdown" }) => {
@@ -19,23 +19,19 @@ export const Dropdown: FC<DropdownProps> = ({ menuBlocks, onChange, activeItemId
     });
 
     const triggerRef = useRef<HTMLButtonElement | null>(null);
-    const overlayRef = useRef<HTMLDivElement | null>(null);
 
     const { triggerProps, valueProps, menuProps } = useSelect(propsWithChildren, state, triggerRef);
     const { buttonProps } = useButton(triggerProps, triggerRef);
     const { isOpen } = state;
-    const { overlayProps } = useOverlay(
-        { isOpen, onClose: () => state.close(), shouldCloseOnBlur: true, isDismissable: true },
-        overlayRef,
-    );
     const { isFocusVisible, focusProps } = useFocusRing();
 
     useEffect(() => {
         state.setSelectedKey(activeItemId as string);
-    }, [state, activeItemId]);
+    }, [activeItemId]);
 
     return (
         <div className="relative w-full">
+            <HiddenSelect state={state} triggerRef={triggerRef} />
             <button
                 {...mergeProps(buttonProps, focusProps)}
                 ref={triggerRef}
@@ -49,15 +45,9 @@ export const Dropdown: FC<DropdownProps> = ({ menuBlocks, onChange, activeItemId
             </button>
 
             {isOpen && (
-                <div className="absolute left-0 shadow-md rounded-lg mt-2 w-full animate-growDown">
-                    <FocusScope restoreFocus>
-                        <div {...overlayProps} ref={overlayRef}>
-                            <DismissButton onDismiss={state.close} />
-                            <SelectMenu ariaProps={menuProps} state={state} menuBlocks={menuBlocks} />
-                            <DismissButton onDismiss={state.close} />
-                        </div>
-                    </FocusScope>
-                </div>
+                <Overlay isOpen={isOpen} onClose={state.close}>
+                    <SelectMenu ariaProps={menuProps} state={state} menuBlocks={menuBlocks} />
+                </Overlay>
             )}
         </div>
     );

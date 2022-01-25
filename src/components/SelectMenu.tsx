@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import { useListBox } from "@react-aria/listbox";
 import React, { ReactElement, useRef } from "react";
 import { getKeyItemRecord, getMenuItems } from "../helpers";
@@ -13,22 +14,22 @@ export const SelectMenu = ({
 }: SelectMenuProps): ReactElement<SelectMenuProps> => {
     const items = getMenuItems(menuBlocks);
     const keyItemRecord = getKeyItemRecord(items);
-    const listRef = useRef<HTMLUListElement | null>(null);
+    const ref = useRef<HTMLUListElement | null>(null);
     const { listBoxProps } = useListBox(
         {
             ...ariaProps,
             "aria-label": ariaLabel,
         },
         state,
-        listRef,
+        ref,
     );
 
     return (
-        <ul {...listBoxProps} ref={listRef} className="p-0 outline-none text-left">
+        <ul {...listBoxProps} ref={ref} className="p-0 outline-none text-left">
             {[...state.collection].map((section) => (
                 <MenuSection key={section.key} ariaLabel={section["aria-label"]}>
                     {[...section.childNodes].map((item) => (
-                        <MenuItem key={item.key} state={state} node={item} title={keyItemRecord[item.key].title} />
+                        <MenuItem key={item.key} state={state} node={item} item={keyItemRecord[item.key]} />
                     ))}
                 </MenuSection>
             ))}
