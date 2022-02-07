@@ -3,9 +3,17 @@ import { ListState } from "@react-stately/list";
 import { Node } from "@react-types/shared";
 import { PropsWithChildren } from "react";
 
+export enum IconEnum {
+    Music = "music",
+    Film = "film",
+    Image = "image",
+    File = "file",
+}
+
 export type MenuItemType = {
     id: string | number;
     title: string;
+    icon: IconEnum;
 };
 
 export type MenuBlock = {

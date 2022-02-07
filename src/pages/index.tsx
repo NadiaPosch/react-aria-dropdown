@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Dropdown } from "../components/Dropdown";
+import { IconEnum, MenuBlock } from "../types";
 
-const menuBlocks = [
+const menuBlocks: MenuBlock[] = [
     {
         id: "block-1",
         ariaLabel: "First Block",
@@ -9,10 +10,12 @@ const menuBlocks = [
             {
                 id: 1,
                 title: "First item",
+                icon: IconEnum.Music,
             },
             {
                 id: 2,
                 title: "Second item",
+                icon: IconEnum.Film,
             },
         ],
     },
@@ -23,10 +26,12 @@ const menuBlocks = [
             {
                 id: 3,
                 title: "Third item",
+                icon: IconEnum.Image,
             },
             {
                 id: 4,
                 title: "Fourth item",
+                icon: IconEnum.File,
             },
         ],
     },

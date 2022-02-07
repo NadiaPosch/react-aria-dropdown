@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
 import { useFocusRing } from "@react-aria/focus";
 import { useListBox } from "@react-aria/listbox";
 import { mergeProps } from "@react-aria/utils";
