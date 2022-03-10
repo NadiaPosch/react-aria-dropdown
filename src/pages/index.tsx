@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Dropdown } from "../components/Dropdown";
+import { useState } from "react";
+import { Switch } from "../components/Switch";
 import { IconEnum, MenuBlock } from "../types";
 
 const menuBlocks: MenuBlock[] = [
@@ -38,19 +38,16 @@ const menuBlocks: MenuBlock[] = [
 ];
 
 export default function Home() {
-    const [activeItemId, setActiveItemId] = useState<string | number>("");
-    useEffect(() => setActiveItemId(activeItemId), [activeItemId]);
+    const [isSelected, setIsSelected] = useState(false);
 
     return (
         <div className="flex justify-center items-center min-h-screen">
             <main>
-                <h1 className="text-4xl mb-8">React Aria Dropdown Example</h1>
-                <div className="w-60 mx-auto">
-                    <Dropdown
-                        menuBlocks={menuBlocks}
-                        activeItemId={activeItemId}
-                        onChange={(id) => setActiveItemId(id as string)}
-                    />
+                <h1 className="text-4xl mb-8">React Aria Switch</h1>
+                <div className="w-56 mx-auto">
+                    <Switch isSelected={isSelected} onChange={() => setIsSelected(!isSelected)}>
+                        {isSelected ? "turn me off..." : "turn me on!"}
+                    </Switch>
                 </div>
             </main>
         </div>
